@@ -1,0 +1,26 @@
+Source: multiflexi-abraflexi
+Section: web
+Priority: optional
+Maintainer: "Vítězslav Dvořák" <info@vitexsoftware.cz>
+Build-Depends: debhelper-compat (=13)
+Standards-Version: 4.6.1
+Homepage: https://github.com/VitexSoftware/multiflexi-abraflexi
+Rules-Requires-Root: no
+
+Package: multiflexi-abraflexi
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}, php-vitexsoftware-multiflexi-core, multiflexi-cli (>= 2.2.0)
+Description: MultiFlexi AbraFlexi credential prototype
+ AbraFlexi ERP credential prototype for MultiFlexi core.
+ Provides the CredentialProtoType class that defines AbraFlexi URL,
+ login, password and company configuration fields.
+
+Package: multiflexi-abraflexi-ui
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}, multiflexi-abraflexi (= ${binary:Version}), multiflexi-web
+Description: MultiFlexi AbraFlexi UI components
+ AbraFlexi connection dialog for MultiFlexi web interface.
+ Tests server connectivity, authentication and company access,
+ displays available companies list.

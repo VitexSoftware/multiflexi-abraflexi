@@ -1,0 +1,8 @@
+multiflexi-abraflexi (2.0.0) UNRELEASED; urgency=medium
+
+  * Split into separate source package from multiflexi
+  * Two binary packages: multiflexi-abraflexi (core) and
+    multiflexi-abraflexi-ui (web interface)
+  * postinst runs multiflexi-cli crprototype sync
+
+ -- "Vítězslav Dvořák" <info@vitexsoftware.cz>  Sun, 01 Mar 2026 23:50:00 +0100
