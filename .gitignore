@@ -10,3 +10,4 @@ debian/files
 debian/tmp/
 debian/multiflexi-abraflexi/
 debian/multiflexi-abraflexi-ui/
+/nbproject/private/

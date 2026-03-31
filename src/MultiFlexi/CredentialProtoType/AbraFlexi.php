@@ -55,24 +55,24 @@ class AbraFlexi extends \MultiFlexi\CredentialProtoType implements \MultiFlexi\c
         // Implement the configuration form logic if needed
     }
 
-    public static function name(): string
+    public function name(): string
     {
         return _('AbraFlexi');
     }
 
-    public static function description(): string
+    public function description(): string
     {
         return _('AbraFlexi credential type for integration with AbraFlexi API');
     }
 
     #[\Override]
-    public static function uuid(): string
+    public function uuid(): string
     {
         return '3f2504e0-4f89-11d3-9a0c-0305e82c3301';
     }
 
     #[\Override]
-    public static function logo(): string
+    public function logo(): string
     {
         return self::$logo;
     }
