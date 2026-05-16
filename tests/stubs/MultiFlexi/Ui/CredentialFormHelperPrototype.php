@@ -13,9 +13,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
+namespace MultiFlexi\Ui;
 
-// Stub for CredentialFormHelperPrototype — lives in multiflexi-web, not required here
-if (!class_exists(\MultiFlexi\Ui\CredentialFormHelperPrototype::class)) {
-    require_once __DIR__.'/stubs/MultiFlexi/Ui/CredentialFormHelperPrototype.php';
+/**
+ * Test stub for CredentialFormHelperPrototype (lives in multiflexi-web).
+ */
+abstract class CredentialFormHelperPrototype
+{
+    protected mixed $credential = null;
+
+    public function addItem(mixed $item): void {}
+
+    public function finalize(): void {}
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="addon">
+  <id>cz.vitexsoftware.multiflexi_abraflexi</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>MultiFlexi AbraFlexi</name>
+  <summary>AbraFlexi ERP credential prototype for MultiFlexi</summary>
+  <description>
+    <p>
+      Provides the AbraFlexi ERP credential prototype for MultiFlexi core,
+      defining the URL, login, password and company configuration fields
+      required to connect to an AbraFlexi server.
+    </p>
+    <p>
+      Also ships a web UI component with a connection dialog that tests
+      server connectivity, validates authentication and lists available
+      companies.
+    </p>
+  </description>
+  <icon type="stock">multiflexi-abraflexi</icon>
+  <url type="homepage">https://github.com/VitexSoftware/multiflexi-abraflexi</url>
+  <url type="bugtracker">https://github.com/VitexSoftware/multiflexi-abraflexi/issues</url>
+  <extends>cz.vitexsoftware.multiflexi</extends>
+  <categories>
+    <category>Office</category>
+  </categories>
+  <provides>
+    <library>MultiFlexi/CredentialProtoType/AbraFlexi.php</library>
+  </provides>
+  <releases>
+    <release version="2.0.0" date="2026-03-01" type="development" />
+  </releases>
+  <developer id="cz.vitexsoftware">
+    <name>Vítězslav Dvořák</name>
+  </developer>
+  <content_rating type="oars-1.1" />
+</component>

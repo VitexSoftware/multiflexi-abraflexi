@@ -1,5 +1,7 @@
 # multiflexi-abraflexi
 
+![MultiFlexi AbraFlexi](multiflexi-abraflexi.svg)
+
 AbraFlexi ERP integration support for [MultiFlexi](https://multiflexi.eu).
 
 ## Description

@@ -20,19 +20,26 @@ use PHPUnit\Framework\TestCase;
 
 class AbraFlexiTest extends TestCase
 {
+    private AbraFlexi $abraFlexi;
+
+    protected function setUp(): void
+    {
+        $this->abraFlexi = new AbraFlexi();
+    }
+
     public function testName(): void
     {
-        $this->assertNotEmpty(AbraFlexi::name());
+        $this->assertNotEmpty($this->abraFlexi->name());
     }
 
     public function testDescription(): void
     {
-        $this->assertNotEmpty(AbraFlexi::description());
+        $this->assertNotEmpty($this->abraFlexi->description());
     }
 
     public function testUuid(): void
     {
-        $uuid = AbraFlexi::uuid();
+        $uuid = $this->abraFlexi->uuid();
         $this->assertMatchesRegularExpression(
             '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',
             $uuid,
@@ -41,6 +48,6 @@ class AbraFlexiTest extends TestCase
 
     public function testLogo(): void
     {
-        $this->assertSame('AbraFlexi.svg', AbraFlexi::logo());
+        $this->assertSame('AbraFlexi.svg', $this->abraFlexi->logo());
     }
 }
