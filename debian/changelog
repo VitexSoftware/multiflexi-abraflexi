@@ -1,8 +1,13 @@
-multiflexi-abraflexi (2.0.0) UNRELEASED; urgency=medium
+multiflexi-abraflexi (2.0.1) unstable; urgency=medium
 
+  [ "Vítězslav Dvořák" ]
   * Split into separate source package from multiflexi
   * Two binary packages: multiflexi-abraflexi (core) and
     multiflexi-abraflexi-ui (web interface)
   * postinst runs multiflexi-cli crprototype sync
 
- -- "Vítězslav Dvořák" <info@vitexsoftware.cz>  Sun, 01 Mar 2026 23:50:00 +0100
+  [ Vítězslav Dvořák ]
+  * Packaging: Standards-Version 4.7.0, Jenkinsfile CI improvements with
+    failure notes
+
+ -- Vítězslav Dvořák <info@vitexsoftware.cz>  Mon, 18 May 2026 16:56:21 +0200
