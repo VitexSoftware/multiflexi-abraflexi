@@ -1,0 +1,76 @@
+{
+  "$schema": "https://raw.githubusercontent.com/VitexSoftware/php-vitexsoftware-multiflexi-core/refs/heads/main/schema/credential-prototype.json",
+  "uuid": "3f2504e0-4f89-11d3-9a0c-0305e82c3301",
+  "code": "AbraFlexi",
+  "name": {
+    "en": "AbraFlexi",
+    "cs": "AbraFlexi"
+  },
+  "description": {
+    "en": "AbraFlexi credential type for integration with AbraFlexi ERP API",
+    "cs": "Typ přihlašovacích údajů pro integraci s AbraFlexi ERP API"
+  },
+  "version": "1.0",
+  "logo": "AbraFlexi.svg",
+  "homepage": "https://www.abraflexi.eu/",
+  "tags": [
+    "AbraFlexi",
+    "ERP",
+    "accounting",
+    "invoicing"
+  ],
+  "fields": [
+    {
+      "keyword": "ABRAFLEXI_URL",
+      "type": "url",
+      "name": {
+        "en": "AbraFlexi Server URI",
+        "cs": "URI Serveru AbraFlexi"
+      },
+      "description": {
+        "en": "AbraFlexi REST API endpoint URL",
+        "cs": "URL koncového bodu REST API AbraFlexi"
+      },
+      "required": true
+    },
+    {
+      "keyword": "ABRAFLEXI_LOGIN",
+      "type": "string",
+      "name": {
+        "en": "AbraFlexi Login",
+        "cs": "Login do AbraFlexi"
+      },
+      "description": {
+        "en": "Username for AbraFlexi API",
+        "cs": "Uživatelské jméno pro AbraFlexi API"
+      },
+      "required": true
+    },
+    {
+      "keyword": "ABRAFLEXI_PASSWORD",
+      "type": "password",
+      "name": {
+        "en": "AbraFlexi Password",
+        "cs": "Heslo AbraFlexi"
+      },
+      "description": {
+        "en": "Password for AbraFlexi API",
+        "cs": "Heslo pro AbraFlexi API"
+      },
+      "required": true
+    },
+    {
+      "keyword": "ABRAFLEXI_COMPANY",
+      "type": "string",
+      "name": {
+        "en": "AbraFlexi Company Code",
+        "cs": "Kód společnosti AbraFlexi"
+      },
+      "description": {
+        "en": "Company code in AbraFlexi",
+        "cs": "Kód společnosti v AbraFlexi"
+      },
+      "required": true
+    }
+  ]
+}
