@@ -20,7 +20,7 @@ Description: MultiFlexi AbraFlexi credential prototype
 Package: multiflexi-abraflexi-ui
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}, multiflexi-abraflexi (= ${binary:Version}), multiflexi-web
+Depends: ${misc:Depends}, multiflexi-abraflexi (= ${binary:Version}), multiflexi-web|multiflexi-web5
 Description: MultiFlexi AbraFlexi UI components
  AbraFlexi connection dialog for MultiFlexi web interface.
  Tests server connectivity, authentication and company access,
