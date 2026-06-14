@@ -22,7 +22,7 @@ namespace MultiFlexi\CredentialProtoType;
  *
  * @no-named-arguments
  */
-class AbraFlexi extends \MultiFlexi\CredentialProtoType implements \MultiFlexi\credentialTypeInterface
+class AbraFlexi extends \MultiFlexi\CredentialProtoType implements \MultiFlexi\credentialTypeInterface, \MultiFlexi\checkableCredentialInterface
 {
     public static string $logo = 'AbraFlexi.svg';
 
@@ -75,5 +75,68 @@ class AbraFlexi extends \MultiFlexi\CredentialProtoType implements \MultiFlexi\c
     public function logo(): string
     {
         return self::$logo;
+    }
+
+    #[\Override]
+    public function checkAvailability(): \MultiFlexi\CredentialCheckResult
+    {
+        $url  = (string) ($this->configFieldsProvided->getFieldByCode('ABRAFLEXI_URL')?->getValue()      ?? '');
+        $login = (string) ($this->configFieldsProvided->getFieldByCode('ABRAFLEXI_LOGIN')?->getValue()   ?? '');
+        $pass  = (string) ($this->configFieldsProvided->getFieldByCode('ABRAFLEXI_PASSWORD')?->getValue() ?? '');
+
+        if ($url === '' || $login === '' || $pass === '') {
+            $missing = array_keys(array_filter([
+                'ABRAFLEXI_URL'      => $url   === '',
+                'ABRAFLEXI_LOGIN'    => $login === '',
+                'ABRAFLEXI_PASSWORD' => $pass  === '',
+            ]));
+
+            return new \MultiFlexi\CredentialCheckResult(
+                \MultiFlexi\CredentialState::Misconfigured,
+                sprintf(_('Required fields not set: %s'), implode(', ', $missing)),
+                time(),
+            );
+        }
+
+        // Probe the AbraFlexi server root with basic auth (same endpoint apps use).
+        $ch = curl_init(rtrim($url, '/').'/c/');
+        curl_setopt_array($ch, [
+            \CURLOPT_NOBODY         => true,
+            \CURLOPT_CONNECTTIMEOUT => 5,
+            \CURLOPT_TIMEOUT        => 5,
+            \CURLOPT_USERPWD        => $login.':'.$pass,
+            \CURLOPT_RETURNTRANSFER => true,
+        ]);
+        curl_exec($ch);
+        $errno    = curl_errno($ch);
+        $httpCode = (int) curl_getinfo($ch, \CURLINFO_HTTP_CODE);
+
+        if ($errno !== 0) {
+            return new \MultiFlexi\CredentialCheckResult(
+                \MultiFlexi\CredentialState::Unavailable,
+                sprintf(_('AbraFlexi server unreachable: %s'), curl_strerror($errno)),
+                time(),
+                60,
+            );
+        }
+
+        if ($httpCode === 401 || $httpCode === 403) {
+            return new \MultiFlexi\CredentialCheckResult(
+                \MultiFlexi\CredentialState::Misconfigured,
+                sprintf(_('Authentication failed (HTTP %d) — check ABRAFLEXI_LOGIN and ABRAFLEXI_PASSWORD'), $httpCode),
+                time(),
+            );
+        }
+
+        if ($httpCode >= 500) {
+            return new \MultiFlexi\CredentialCheckResult(
+                \MultiFlexi\CredentialState::Unavailable,
+                sprintf(_('AbraFlexi server returned HTTP %d'), $httpCode),
+                time(),
+                60,
+            );
+        }
+
+        return new \MultiFlexi\CredentialCheckResult(\MultiFlexi\CredentialState::Available, '', time(), 300);
     }
 }

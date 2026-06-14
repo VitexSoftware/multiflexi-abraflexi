@@ -1,3 +1,11 @@
+multiflexi-abraflexi (2.1.0) UNRELEASED; urgency=medium
+
+  * AbraFlexi prototype: add checkAvailability() — validates URL/login/password,
+    probes server root with basic auth; maps 401/403 → Misconfigured,
+    transport errors → Unavailable, 2xx → Available
+
+ -- vitex <info@vitexsoftware.cz>  Sat, 14 Jun 2026 12:00:00 +0200
+
 multiflexi-abraflexi (2.0.1) unstable; urgency=medium
 
   [ "Vítězslav Dvořák" ]
