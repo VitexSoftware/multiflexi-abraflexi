@@ -1,6 +1,7 @@
 # multiflexi-abraflexi
 
 ![MultiFlexi AbraFlexi](multiflexi-abraflexi.svg)
+![Packaging: deb](https://img.shields.io/badge/packaging-.deb-red?logo=debian&logoColor=white)
 
 AbraFlexi ERP integration support for [MultiFlexi](https://multiflexi.eu).
 
