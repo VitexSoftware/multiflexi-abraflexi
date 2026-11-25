@@ -137,10 +137,11 @@ def localBuildTree(String root, String gitUrl, String gitCommit, String buildId,
             fi
             mkdir -p "$LB_OUT" "$(dirname "$LB_TREE")"
             lock="$LB_ROOT/locks/$(basename "$LB_MIRROR").lock"
-            # Local clone hardlinks objects into $LB_TREE (mounted into Docker).
             # The bare mirror is NOT mounted into the build container, so neither
-            # a worktree nor a --shared clone works inside it.
-            flock "$lock" git clone --no-checkout "$LB_MIRROR" "$LB_TREE"
+            # a worktree nor a --shared clone works inside it. Objects are copied,
+            # not hardlinked: the container has sudo and must not be able to
+            # modify inodes of the persistent mirror.
+            flock "$lock" git clone --no-hardlinks --no-checkout "$LB_MIRROR" "$LB_TREE"
             git -C "$LB_TREE" checkout --detach -f "$LB_SHA"
         '''
     }
