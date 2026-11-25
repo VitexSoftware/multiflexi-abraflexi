@@ -50,4 +50,14 @@ class AbraFlexiTest extends TestCase
     {
         $this->assertSame('AbraFlexi.svg', $this->abraFlexi->logo());
     }
+
+    public function testPasswordFieldIsSecret(): void
+    {
+        $field = $this->abraFlexi->fieldsProvided()->getFieldByCode('ABRAFLEXI_PASSWORD');
+
+        $this->assertNotNull($field);
+        $this->assertSame('password', $field->getType());
+        $this->assertTrue($field->isSecret());
+        $this->assertTrue($field->isRedactable());
+    }
 }

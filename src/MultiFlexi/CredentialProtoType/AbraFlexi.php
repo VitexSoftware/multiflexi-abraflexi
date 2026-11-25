@@ -34,7 +34,7 @@ class AbraFlexi extends \MultiFlexi\CredentialProtoType implements \MultiFlexi\c
         $loginField = new \MultiFlexi\ConfigField('ABRAFLEXI_LOGIN', 'string', _('AbraFlexi Login'), _('AbraFlexi user login'));
         $loginField->setHint('winstrom')->setValue('winstrom');
 
-        $passwordField = new \MultiFlexi\ConfigField('ABRAFLEXI_PASSWORD', 'string', _('AbraFlexi Password'), _('AbraFlexi user password'));
+        $passwordField = new \MultiFlexi\ConfigField('ABRAFLEXI_PASSWORD', 'password', _('AbraFlexi Password'), _('AbraFlexi user password'));
         $passwordField->setHint('winstrom')->setValue('winstrom');
 
         $urlField = new \MultiFlexi\ConfigField('ABRAFLEXI_URL', 'string', _('AbraFlexi Server URI'), _('AbraFlexi server URI'));
