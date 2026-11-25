@@ -5,7 +5,7 @@
 String[] distributions = [
 			'debian:bookworm',
 			'debian:trixie',
-			'debian:forky',
+//			'debian:forky',    // disabled until required dependencies are available
 //			'ubuntu:jammy',    // postinst PHP Fatal error: Symfony/Polyfill/Php80/autoload.php not found (path incompatibility)
 			'ubuntu:noble',
 //			'ubuntu:resolute', // multiflexi-cli uninstallable: multiflexi-sqlite (>= 2.4.1) not available for resolute
@@ -137,7 +137,11 @@ def localBuildTree(String root, String gitUrl, String gitCommit, String buildId,
             fi
             mkdir -p "$LB_OUT" "$(dirname "$LB_TREE")"
             lock="$LB_ROOT/locks/$(basename "$LB_MIRROR").lock"
-            flock "$lock" git -C "$LB_MIRROR" worktree add --detach --force "$LB_TREE" "$LB_SHA"
+            # Local clone hardlinks objects into $LB_TREE (mounted into Docker).
+            # The bare mirror is NOT mounted into the build container, so neither
+            # a worktree nor a --shared clone works inside it.
+            flock "$lock" git clone --no-checkout "$LB_MIRROR" "$LB_TREE"
+            git -C "$LB_TREE" checkout --detach -f "$LB_SHA"
         '''
     }
     return t
@@ -146,11 +150,9 @@ def localBuildTree(String root, String gitUrl, String gitCommit, String buildId,
 // Tear the per-build tree down again. find -delete as jenkins, with chown
 // recovery for root-owned leftovers from buildImage.inside{}.
 def localBuildTreeRelease(Map t) {
-    withEnv(["LB_MIRROR=${t.mirror}", "LB_BASE=${t.base}", "LB_TREE=${t.tree}"]) {
+    withEnv(["LB_BASE=${t.base}"]) {
         sh '''
             set -u
-            git -C "$LB_MIRROR" worktree remove --force "$LB_TREE" 2>/dev/null || true
-            git -C "$LB_MIRROR" worktree prune 2>/dev/null || true
             if [ -n "$LB_BASE" ] && [ -d "$LB_BASE" ]; then
                 sudo chown -R jenkins:jenkins "$LB_BASE" 2>/dev/null || true
                 find "$LB_BASE" -mindepth 1 -delete 2>/dev/null || true
@@ -214,6 +216,25 @@ distributions.each { distro ->
                 def t = null
                 try {
                     stage('Checkout ' + distroName) {
+                        // Bare `git fetch origin` has no Jenkins SSH creds. If this
+                        // node was not the SCM bootstrap node, seed its mirror from
+                        // a credentialed checkout on local disk first.
+                        def needSeed = sh(script: """
+                            set -eu
+                            slug=\$(printf '%s' '${gitUrl}' | sed 's/[^A-Za-z0-9._-]/_/g')
+                            mirror="${root}/ref/\${slug}.git"
+                            if [ -d "\$mirror" ] && git -C "\$mirror" cat-file -e '${gitCommit}^{commit}' 2>/dev/null; then
+                                echo no
+                            else
+                                echo yes
+                            fi
+                        """, returnStdout: true).trim()
+                        if (needSeed == 'yes') {
+                            ws(bootstrapWs(root) + '-seed-' + distroCode) {
+                                def sv = checkout scm
+                                seedNodeMirror(root, sv.GIT_URL, sv.GIT_COMMIT, pwd())
+                            }
+                        }
                         t = localBuildTree(root, gitUrl, gitCommit, buildId)
                         echo "Node-local build tree: ${t.tree} (node ${env.NODE_NAME})"
                         buildImage = docker.image(vendor + '/' + distro)
@@ -373,7 +394,7 @@ distributions.each { distro ->
 
 parallel branches
 
-node {
+node('aptly') {
     stage('Publish to Aptly') {
 	publishDebToAptly()
     }
